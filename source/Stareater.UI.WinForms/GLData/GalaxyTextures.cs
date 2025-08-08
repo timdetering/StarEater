@@ -205,9 +205,12 @@ namespace Stareater.GLData
 
         private IkonComposite loadAtlas()
         {
-            var atlasFile = new FileInfo(AtlasImagePath);
-            var metadataFile = new FileInfo(AtlasIkonPath);
-            var rootFolder = SettingsWinforms.Get.DataRootPath ?? "";
+            string rootFolder = SettingsWinforms.Get.DataRootPath ?? "";
+            string imageFilePath = Path.Combine(rootFolder, AtlasImagePath);
+            var atlasFile = new FileInfo(imageFilePath);
+
+            string ikonFilePath = Path.Combine(rootFolder, AtlasIkonPath);
+            var metadataFile = new FileInfo(ikonFilePath);
 
             //var extraSprites = new DirectoryInfo(rootFolder + SpritesPath).
             //    GetFiles().
@@ -223,13 +226,11 @@ namespace Stareater.GLData
             //using (var ikonParser = new IkonParser(new StreamReader(rootFolder + AtlasIkonPath)))
             //    ikonData = ikonParser.ParseNext(AtlasTag).To<IkonComposite>();
 
-            string ikonFilePath = Path.Combine(rootFolder, AtlasIkonPath);
             using (var ikonParser = new IkonParser(new StreamReader(ikonFilePath)))
             {
                 ikonData = ikonParser.ParseNext(AtlasTag).To<IkonComposite>();
             }
 
-            string imageFilePath = Path.Combine(rootFolder, AtlasImagePath);
             using (var atlasImage = new Bitmap(imageFilePath))
             {
                 if (extraSprites.Any())
